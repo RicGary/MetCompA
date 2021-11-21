@@ -9,27 +9,6 @@ By Eric Naiber.
 """
 
 
-def F(x):
-    """
-    Função de teste:
-    - Resultado analítico: e³ + e
-    - Resultado decimal: 22.80381
-
-    (f, 0, 2, 200)
-    """
-    from math import e
-    return x * e ** (x + 1)
-
-
-def G(x):
-    """
-    Função de teste:
-    - Primeira raiz: -1,3588989
-    - Segunda raiz: 7,3588989
-    """
-    return -x**2+6*x+10
-
-
 def __Simples__(f, a, b, N):
     """
     Função para calcular uma integral utilizando o método mais
@@ -37,10 +16,10 @@ def __Simples__(f, a, b, N):
 
     Escala de precisão: ★ ☆ ☆ ☆ ☆
 
-    f: função
-    a: limite inferior
-    b: limite superior
-    N: quantia de fatias
+    :param f: função
+    :param a: limite inferior
+    :param b: limite superior
+    :param N: quantia de fatias
     """
     integral = 0
     dx = (b - a) / N
@@ -59,10 +38,10 @@ def __Trapezio__(f, a, b, N):
 
     Escala de precisão: ★ ★ ☆ ☆ ☆
 
-    f: função
-    a: limite inferior
-    b: limite superior
-    N: quantia de fatias
+    :param f: função
+    :param a: limite inferior
+    :param b: limite superior
+    :param N: quantia de fatias
     """
     from numpy import linspace
 
@@ -84,10 +63,10 @@ def __Simpson__(f, a, b, N):
 
     Escala de precisão: ★ ★ ★ ★ ☆
 
-    f: função
-    a: limite inferior
-    b: limite superior
-    N: quantia de fatias
+    :param f: função
+    :param a: limite inferior
+    :param b: limite superior
+    :param N: quantia de fatias
     """
 
     extremos = f(a) + f(b)
@@ -110,10 +89,10 @@ def __Erro__(Iexato, metodo, f, a, b, N):
 
     Iexato: valor exato da integral
     metodo: método de integração
-    f: função
-    a: limite inferior
-    b: limite superior
-    N: quantia de fatias
+    :param f: função
+    :param a: limite inferior
+    :param b: limite superior
+    :param N: quantia de fatias
     """
     return abs(Iexato - metodo(f, a, b, N))
 
@@ -155,8 +134,8 @@ def __Zero_Newton__(f, x, erro=1e-8):
 
     Qualidade do método: ★ ★ ★ ☆ ☆
 
-    f: função
-    x: chute inicial
+    :param f: função
+    :param x: chute inicial
     """
     def deriv_centrada(f, x, dx=1e-8):
         """
@@ -186,9 +165,9 @@ def __Zero_Secante__(f, a, b, erro=1e-6):
 
     Qualidade do método: ★ ★ ★ ★ ☆
 
-    f: função
-    a: chute inicial inferior
-    b: chute inicial superior
+    :param f: função
+    :param a: chute inicial inferior
+    :param b: chute inicial superior
     """
 
     while erro <= abs(b - a):
@@ -197,3 +176,46 @@ def __Zero_Secante__(f, a, b, erro=1e-6):
         a, b = b, c
 
     return a
+
+
+if __name__ == '__main__':
+    print(__name__)
+
+    def F(x):
+        """
+        Função de teste:
+        - Resultado analítico: e³ + e
+        - Resultado decimal: 22.80381
+
+        (F, 0, 2, 200)
+        """
+        from math import e
+        return x * e ** (x + 1)
+
+    print(
+        "Métodos para Integração",
+        "-"*(len(str(__Simpson__(F, 0, 2, 200)))),
+        __Simples__(F, 0, 2, 200),
+        __Trapezio__(F, 0, 2, 200),
+        __Simpson__(F, 0, 2, 200),
+        "-"*(len(str(__Simpson__(F, 0, 2, 200)))),
+        sep='\n'
+    )
+
+    def G(x):
+        """
+        Função de teste:
+        - Primeira raiz: -1,3588989
+        - Segunda raiz: 7,3588989
+        """
+        return -x ** 2 + 6 * x + 10
+
+    print(
+        "Métodos de f(x) = 0",
+        "-"*len(str(__Zero_Bisseccao__(G, 6, 8))),
+        __Zero_Bisseccao__(G, 6, 8),
+        __Zero_Newton__(G, 6),
+        __Zero_Secante__(G, 6, 8),
+        "-" * len(str(__Zero_Bisseccao__(G, 6, 8))),
+        sep='\n'
+    )
