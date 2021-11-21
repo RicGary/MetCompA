@@ -170,10 +170,13 @@ def __Zero_Secante__(f, a, b, erro=1e-6):
     :param b: chute inicial superior
     """
 
-    while erro <= abs(b - a):
-        d = abs(b - a) / abs(a)  # tolerância de epsilon 1e-6
-        c = (a * f(b) - b * f(a)) / (f(b) - f(a))  # encontrar o próximo ponto dado os primeiros 2 pontos.
-        a, b = b, c
+    while erro <= abs(b - a) / abs(a):
+        c = (a * f(b) - b * f(a)) / (f(b) - f(a))
+
+        if abs(c - a) < abs(b - c):
+            b, a = a, c
+        else:
+            a, b = b, c
 
     return a
 
